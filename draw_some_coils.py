@@ -37,4 +37,4 @@ cs.draw_coils(ax)
 plt.show()
 
 
-print("Hi again, NOT!")
+print("Not Hi again")
