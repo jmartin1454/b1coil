@@ -35,3 +35,6 @@ fig = plt.figure()
 ax=fig.add_subplot(111,projection='3d')
 cs.draw_coils(ax)
 plt.show()
+
+
+print("Hi again")
