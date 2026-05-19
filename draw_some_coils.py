@@ -39,14 +39,12 @@ def brectangle(z,a,b,i):
 # cs = coilset()
 # cs.add_coil(points)
 # import matplotlib.pyplot as plt
-# fig = plt.figure()
-# ax=fig.add_subplot(111,projection='3d')
-# cs.draw_coils(ax)
 
 
 
 a = 0.08 # m
 b = 0.1 # m
+s = 0.09 # m -- separation of the two coils
 i = 1.0 # A
 p0 = np.array([a/2,b/2,0])
 p1 = np.array([-a/2,b/2,0])
@@ -64,8 +62,8 @@ print(2*mu_0*i*a/(4*pi*b/2)/sqrt((a/2)**2+(b/2)**2)+2*mu_0*i*b/(4*pi*a/2)/sqrt((
 print("End test of b_segment")
 
 
-fig = plt.figure()
-ax2=fig.add_subplot()
+fig2 = plt.figure()
+ax2=fig2.add_subplot()
 z=np.linspace(-1,1,201)
 print(z)
 bs=brectangle(z,a,b,i)
@@ -74,10 +72,21 @@ print(len(bs))
 ax2.plot(z,bs)
 
 cs = coilset()
+p0 = np.array([a/2,b/2,-s/2])
+p1 = np.array([-a/2,b/2,-s/2])
+p2 = np.array([-a/2,-b/2,-s/2])
+p3 = np.array([a/2,-b/2,-s/2])
+points = (p0,p1,p2,p3)
 cs.add_coil(points)
-# fig = plt.figure()
-# ax=fig.add_subplot(111,projection='3d')
-# cs.draw_coils(ax)
+p0 = np.array([a/2,b/2,s/2])
+p1 = np.array([-a/2,b/2,s/2])
+p2 = np.array([-a/2,-b/2,s/2])
+p3 = np.array([a/2,-b/2,s/2])
+points = (p0,p1,p2,p3)
+cs.add_coil(points)
+fig = plt.figure()
+ax=fig.add_subplot(111,projection='3d')
+cs.draw_coils(ax)
 cs.set_common_current(i)
 x=z
 print(x)
