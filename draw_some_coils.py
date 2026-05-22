@@ -9,6 +9,7 @@ from patch import *
 import matplotlib.pyplot as plt
 
 
+import math
 
 
 def brectangle(z,a,b,i):
@@ -48,10 +49,10 @@ def brectangle(z,a,b,i):
 
 
 
-a = 0.08 # m
-b = 0.1 # m
-s = 0.09 # m -- separation of the two coils
-i = 1.0 # A
+a = 0.35 # m
+b = 0.60 # m
+s = 1.2 # m -- separation of the two coils
+i = 0.2 # A
 p0 = np.array([a/2,b/2,0])
 p1 = np.array([-a/2,b/2,0])
 p2 = np.array([-a/2,-b/2,0])
@@ -111,5 +112,16 @@ bps_mesh=cs.b_prime(0,y,z)
 bmod_mesh=sqrt(bps_mesh[0]**2+bps_mesh[1]**2+bps_mesh[2]**2)
 im3=ax3.pcolormesh(y,z,bmod_mesh,vmax=1e-4)
 fig3.colorbar(im3,ax=ax3)
+b_central=cs.b_prime(0,0,0)
+b_central_z=b_central[2]
+
+goal_field=100e-9 # goal central field in T
+print("we need ",math.ceil (goal_field/b_central_z), "turns" )
+print ("the central field is", b_central_z)
+print ("the goal field is", goal_field)
+
+
 
 plt.show()
+
+
