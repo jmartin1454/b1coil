@@ -130,3 +130,5 @@ ani=animation.FuncAnimation(fig,update,frames=N,interval=1,blit=False,repeat=Tru
 # ani.save('asr.mp4')
 plt.show()
 print(Beff)
+
+# trying a push to github
