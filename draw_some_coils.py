@@ -51,8 +51,8 @@ def brectangle(z,a,b,i):
 
 a = 0.35 # m
 b = 0.60 # m
-s = 1.2 # m -- separation of the two coils
-i = 0.2 # A
+s = 1.204 # m -- separation of the two coils
+i = 0.186*2 # A
 p0 = np.array([a/2,b/2,0])
 p1 = np.array([-a/2,b/2,0])
 p2 = np.array([-a/2,-b/2,0])
