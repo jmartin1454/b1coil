@@ -52,7 +52,7 @@ def brectangle(z,a,b,i):
 a = 0.35 # m
 b = 0.60 # m
 s = 1.204 # m -- separation of the two coils
-i = 0.186*2 # A
+i = 0.100 # A
 p0 = np.array([a/2,b/2,0])
 p1 = np.array([-a/2,b/2,0])
 p2 = np.array([-a/2,-b/2,0])
@@ -102,7 +102,7 @@ print(bps[0])
 print(bps[1])
 print(bps[2])
 bp_z=bps[2]
-ax2.plot(z,bp_z,'--')
+ax2.plot(z,bp_z,"--")
 
 fig3 = plt.figure()
 ax3=fig3.add_subplot()
