@@ -69,3 +69,4 @@ print(np.conj(z))
 print(z*np.conj(z))
 print(np.conj(z)*z)
 
+#testing push
