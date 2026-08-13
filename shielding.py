@@ -20,8 +20,8 @@ mu_r=1.09  #relative permeablility of material
 sigma=1.18*(10**7) #electrical conductivity of material in S/m
 r_0=0.3 #in m
 big_delta=0.002 #in m
-b=0.003 #outer radius in m
-a=0.001 #inner radius in m
+b=0.004 #outer radius in m
+a=0.002 #inner radius in m
 #big_delta=b-a   #wall thickness 
 
 
