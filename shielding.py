@@ -88,6 +88,7 @@ ax.set_xscale('log')
 
 ax.set_xlabel("frequency in Hz")
 ax.set_ylabel("SE in dB")
+ax.set_ylim(0, 85)
 ax.set_title("SE thick shield")
 
 ax.grid(True, which="both", ls="--", color='0.65')
@@ -117,11 +118,12 @@ print()
 
 fig=plt.figure()
 ax=fig.add_subplot()
-ax.plot(f, SE_ee_db)
+ax.plot(f, SE_ee_db, color='orange')
 ax.set_xscale('log')
 
 ax.set_xlabel("frequency in Hz")
 ax.set_ylabel("SE in dB")
+ax.set_ylim(0,85)
 ax.set_title("SE exact expression")
 
 ax.grid(True, which="both", ls="--", color='0.65')
@@ -159,6 +161,7 @@ ax.set_xlabel("frequency in Hz")
 ax.set_ylabel("SE in dB")
 ax.set_ylim(0, 85)
 ax.grid(True, which="both", ls="--", color='0.65')
+ax.set_title("SE_ee and SE_ts")
 ax.legend()
 plt.show()
 
