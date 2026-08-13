@@ -63,7 +63,7 @@ print("y=", (mod*math.sin(theta)))
 print("r=", (math.sqrt((np.real(z)**2)+(np.imag(z)**2))))
 #another way to get x, y, and r lengths 
 
-#for conjugate of z
+#for conjugate of z aka z_star
 print(np.conj(z))
 
 print(z*np.conj(z))
