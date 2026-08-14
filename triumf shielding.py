@@ -8,23 +8,28 @@ Created on Fri Aug 14 10:48:55 2026
 import numpy as np
 from matplotlib import pyplot as plt
 
+def se(mu_r,sigma,a,b,f):
+    return 1
 
+print("SE is ",se(1,1,1,1,1))
 
 #constants and calculations
-mu_0=4*np.pi*(10**-7) #H/m
+mu_0=4*np.pi*1e-7 #H/m
 mu_r=1.00 #relative permeablility of material
-sigma=3.5*(10**7) #electrical conductivity of material in S/m
+sigma=3.8e7 #electrical conductivity of material in S/m
 # have to change this still r_0=0.3 #in m'
 h=0.4256 #in m
 phi=1.2043 #in m
 b=np.cbrt(3*phi**2*h/16) #outer radius in m
 a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254)) #inner radius in m
+print("a",a, "b", b)
 big_delta=b-a #wall thickness 
 print("big delta=", big_delta)
-#f=1
+#f=60
 f=np.logspace(0, 5, 500) 
 omega=2*np.pi*f
-delta=np.sqrt(2/omega*mu_0*mu_r*sigma)
+delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+print(delta)
 gamma=(1+1j)/delta
 
 e=1/(3*b**3*gamma**2*mu_r)
@@ -48,7 +53,7 @@ ax.set_xscale('log')
 
 ax.set_xlabel("frequency in Hz")
 ax.set_ylabel("SE in dB")
-ax.set_ylim(-15,85)
+ax.set_ylim(0,100)
 ax.set_title("SE exact expression")
 
 ax.grid(True, which="both", ls="--", color='0.65')
