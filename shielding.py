@@ -55,7 +55,7 @@ print("real z mag=", real_z_mag, "\n")
 
 
 #calculating SE (exact expression) with B10-imaginary numbers
-omega=2*np.pi*1
+omega=2*np.pi*60
 delta= np.sqrt(2/(omega*mu_0*mu_r*sigma)) 
 gamma=((1+1j)/delta)
 print(gamma)
