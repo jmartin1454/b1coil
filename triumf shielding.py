@@ -9,9 +9,78 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 def se(mu_r,sigma,a,b,f):
-    return 1
+     mu_0=4*np.pi*1e-7
+     omega=2*np.pi*f
+     delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+     gamma=(1+1j)/delta
+     q=1/(3*b**3*gamma**2*mu_r)
+     p=3*b-big_delta
+     k=a*b*gamma**2-1
+     l=a**2*b**2*gamma**2+b**2-a*big_delta
+     o=gamma*big_delta
+     se=np.abs(q*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
+                 +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
+     return se
 
-print("SE is ",se(1,1,1,1,1))
+def se_lab(mu_r,sigma,a,b,f):
+    mu_0=4*np.pi*1e-7
+    big_delta=b-a
+    omega=2*np.pi*f
+    delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+    gamma=(1+1j)/delta
+    q=1/(3*b**3*gamma**2*mu_r)
+    p=3*b-big_delta
+    k=a*b*gamma**2-1
+    l=a**2*b**2*gamma**2+b**2-a*big_delta
+    o=gamma*big_delta
+    se=np.abs(q*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
+                 +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
+    return se
+
+#function se for copper 
+r_0=0.3
+big_delta=0.002
+a=r_0-big_delta/2
+b=r_0+big_delta/2
+se_cu=se(1.09,1.18e7,a,b,60)
+print("SE for Cu=", se_cu)
+
+#function se for aluminum
+h=0.4256
+phi=1.2043
+a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
+b=np.cbrt(3*phi**2*h/16)
+big_delta=b-a
+se_al=se(1,3.8e7,a,b,60)
+print("SE for Al=", se_al, "\n")
+
+
+
+
+#function se_lab for copper
+r_0=0.3
+big_delta=0.002
+a=r_0-big_delta/2
+b=r_0+big_delta/2
+se_cop=se_lab(1.09,1.18e7,a,b,60)
+print("SE for Cu", se_cop)
+
+#function se_lab for aluminum 
+h=0.4256
+phi=1.2043
+a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
+b=np.cbrt(3*phi**2*h/16)
+se_alu=se_lab(1,3.8e7,a,b,60)
+se_alu_big_delta=b-a
+print("SE for Al=", se_alu, "\n")
+#print("a=", a, "b=", b, "big delta=", se_alu_big_delta, "\n")
+
+
+
+
+
+
+
 
 #constants and calculations
 mu_0=4*np.pi*1e-7 #H/m
@@ -22,40 +91,41 @@ h=0.4256 #in m
 phi=1.2043 #in m
 b=np.cbrt(3*phi**2*h/16) #outer radius in m
 a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254)) #inner radius in m
-print("a",a, "b", b)
+print("a=",a)
+print("b=", b)
 big_delta=b-a #wall thickness 
 print("big delta=", big_delta)
-#f=60
-f=np.logspace(0, 5, 500) 
+f=60
+#f=np.logspace(0, 5, 500) 
 omega=2*np.pi*f
 delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
-print(delta)
+print("delta=", delta)
 gamma=(1+1j)/delta
 
-e=1/(3*b**3*gamma**2*mu_r)
+q=1/(3*b**3*gamma**2*mu_r)
 p=3*b-big_delta
 k=a*b*gamma**2-1
 l=a**2*b**2*gamma**2+b**2-a*big_delta
 o=gamma*big_delta
-SE_ee=np.abs(e*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
-             +e/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
-
+SE_ee=np.abs(q*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
+             +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
+print("SE for al=", SE_ee)
 
 
 # graphing SE_ee vs f                                                            
-SE_ee_db= 20*np.log10(SE_ee)  
-print()
+#SE_ee_db= 20*np.log10(SE_ee)  
+#print()
 
-fig=plt.figure()
-ax=fig.add_subplot()
-ax.plot(f, SE_ee_db, color='red')
-ax.set_xscale('log')
+#fig=plt.figure()
+#ax=fig.add_subplot()
+#ax.plot(f, SE_ee_db, color='red')
+#ax.set_xscale('log')
 
-ax.set_xlabel("frequency in Hz")
-ax.set_ylabel("SE in dB")
-ax.set_ylim(0,100)
-ax.set_title("SE exact expression")
+#ax.set_xlabel("frequency in Hz")
+#ax.set_ylabel("SE in dB")
+#ax.set_ylim(0,100)
+#ax.set_title("SE exact expression")
 
-ax.grid(True, which="both", ls="--", color='0.65')
+#ax.grid(True, which="both", ls="--", color='0.65')
 
-plt.show()
+#plt.show()
