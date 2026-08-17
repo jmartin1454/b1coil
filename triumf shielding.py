@@ -49,7 +49,7 @@ print("SE for Cu=", se_cu)
 #function se for aluminum
 h=0.4256
 phi=1.2043
-al_a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
+al_a=np.cbrt(3/4*(phi/2-0.0053)**2*(h-2*0.0053))
 al_b=np.cbrt(3*phi**2*h/16)
 al_big_delta=al_b-al_a
 se_al=se(1,3.8e7,al_a,al_b,al_big_delta,30)
@@ -112,6 +112,11 @@ ax.grid(True, which="both", ls="--", color='0.65')
 ax.set_title("aluminum se and se_lab functions")
 ax.legend()
 plt.show()
+
+#finding exact 
+target_y=20 
+found_x=np.interp(target_y, se_al_db, f)
+print(f"for Al, when y reaches {target_y}, x is {found_x}")
 
 
 
