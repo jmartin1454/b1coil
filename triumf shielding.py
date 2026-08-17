@@ -44,7 +44,7 @@ cu_big_delta=0.002
 cu_a=r_0-cu_big_delta/2
 cu_b=r_0+cu_big_delta/2
 se_cu=se(1.09,1.18e7,cu_a,cu_b,cu_big_delta,60)
-print("SE for Cu=", se_cu, "a and b=", cu_a, cu_b)
+print("SE for Cu=", se_cu)
 
 #function se for aluminum
 h=0.4256
@@ -52,7 +52,7 @@ phi=1.2043
 al_a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
 al_b=np.cbrt(3*phi**2*h/16)
 al_big_delta=al_b-al_a
-se_al=se(1,3.8e7,al_a,al_b,al_big_delta,60)
+se_al=se(1,3.8e7,al_a,al_b,al_big_delta,30)
 print("SE for Al=", se_al, "\n")
 
 #function se_lab for copper
@@ -62,7 +62,7 @@ se_cop=se_lab(1.09,1.18e7,cu_a,cu_b,cu_big_delta,60)
 print("SE for Cu", se_cop)
 
 #function se_lab for aluminum 
-se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,60)
+se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,30)
 big_delta=al_b-al_a
 print("SE for Al=", se_alu, "\n")
 #print("a=", a, "b=", b, "big delta=", se_alu_big_delta, "\n")
