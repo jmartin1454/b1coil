@@ -8,8 +8,9 @@ Created on Fri Aug 14 10:48:55 2026
 import numpy as np
 from matplotlib import pyplot as plt
 
-def se(mu_r,sigma,a,b,f):
+def se(mu_r,sigma,a,b,big_delta,f):
      mu_0=4*np.pi*1e-7
+     big_delta=b-a
      omega=2*np.pi*f
      delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
      gamma=(1+1j)/delta
@@ -22,7 +23,7 @@ def se(mu_r,sigma,a,b,f):
                  +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
      return se
 
-def se_lab(mu_r,sigma,a,b,f):
+def se_lab(mu_r,sigma,a,b,big_delta,f):
     mu_0=4*np.pi*1e-7
     big_delta=b-a
     omega=2*np.pi*f
@@ -39,93 +40,107 @@ def se_lab(mu_r,sigma,a,b,f):
 
 #function se for copper 
 r_0=0.3
-big_delta=0.002
-a=r_0-big_delta/2
-b=r_0+big_delta/2
-se_cu=se(1.09,1.18e7,a,b,60)
-print("SE for Cu=", se_cu)
+cu_big_delta=0.002
+cu_a=r_0-cu_big_delta/2
+cu_b=r_0+cu_big_delta/2
+se_cu=se(1.09,1.18e7,cu_a,cu_b,cu_big_delta,60)
+print("SE for Cu=", se_cu, "a and b=", cu_a, cu_b)
 
 #function se for aluminum
 h=0.4256
 phi=1.2043
-a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
-b=np.cbrt(3*phi**2*h/16)
-big_delta=b-a
-se_al=se(1,3.8e7,a,b,60)
+al_a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
+al_b=np.cbrt(3*phi**2*h/16)
+al_big_delta=al_b-al_a
+se_al=se(1,3.8e7,al_a,al_b,al_big_delta,60)
 print("SE for Al=", se_al, "\n")
-
-
-
 
 #function se_lab for copper
 r_0=0.3
 big_delta=0.002
-a=r_0-big_delta/2
-b=r_0+big_delta/2
-se_cop=se_lab(1.09,1.18e7,a,b,60)
+se_cop=se_lab(1.09,1.18e7,cu_a,cu_b,cu_big_delta,60)
 print("SE for Cu", se_cop)
 
 #function se_lab for aluminum 
-h=0.4256
-phi=1.2043
-a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
-b=np.cbrt(3*phi**2*h/16)
-se_alu=se_lab(1,3.8e7,a,b,60)
-se_alu_big_delta=b-a
+se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,60)
+big_delta=al_b-al_a
 print("SE for Al=", se_alu, "\n")
 #print("a=", a, "b=", b, "big delta=", se_alu_big_delta, "\n")
 
 
 
 
+# graphing copper (se_lab and se) vs f                                                            
+f=np.logspace(0, 5, 500)
+omega=2*np.pi*f
+se_cu=se(1.09,1.18e7,cu_a,cu_b,cu_big_delta,f)
+se_cop=se_lab(1.09,1.18e7,cu_a,cu_b,cu_big_delta,f)
+se_cu_db=20*np.log10(se_cu)  
+se_cop_db= 20*np.log10(se_cop)  
+
+fig=plt.figure()
+ax=fig.add_subplot()
+ax.plot(f,se_cu_db,label="se function", color="red")
+ax.plot(f,se_cop_db,linestyle="--",label="se lab function", color="green")
+ax.set_xscale('log')
+ax.set_xlabel("frequency in Hz")
+ax.set_ylabel("SE in dB")
+ax.set_ylim(-15, 85)
+ax.grid(True, which="both", ls="--", color='0.65')
+ax.set_title("copper se and se_lab functions")
+ax.legend()
+plt.show()
+
+
+#graphing aluminum (se_lab and se) vs f
+f=np.logspace(0, 5, 500)
+omega=2*np.pi*f
+se_al=se(1,3.8e7,al_a,al_b,al_big_delta,f)
+se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,f)
+se_al_db=20*np.log10(se_al)  
+se_alu_db= 20*np.log10(se_alu)  
+
+fig=plt.figure()
+ax=fig.add_subplot()
+ax.plot(f,se_al_db,label="se function")
+ax.plot(f,se_alu_db, linestyle="--",label="se lab function", color="orange")
+ax.set_xscale('log')
+ax.set_xlabel("frequency in Hz")
+ax.set_ylabel("SE in dB")
+ax.set_ylim(-15, 85)
+ax.grid(True, which="both", ls="--", color='0.65')
+ax.set_title("aluminum se and se_lab functions")
+ax.legend()
+plt.show()
+
 
 
 
 
 #constants and calculations
-mu_0=4*np.pi*1e-7 #H/m
-mu_r=1.00 #relative permeablility of material
-sigma=3.8e7 #electrical conductivity of material in S/m
+#mu_0=4*np.pi*1e-7 #H/m
+#mu_r=1.00 #relative permeablility of material
+#sigma=3.8e7 #electrical conductivity of material in S/m
 # have to change this still r_0=0.3 #in m'
-h=0.4256 #in m
-phi=1.2043 #in m
-b=np.cbrt(3*phi**2*h/16) #outer radius in m
-a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254)) #inner radius in m
-print("a=",a)
-print("b=", b)
-big_delta=b-a #wall thickness 
-print("big delta=", big_delta)
-f=60
+#h=0.4256 #in m
+#phi=1.2043 #in m
+#b=np.cbrt(3*phi**2*h/16) #outer radius in m
+#a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254)) #inner radius in m
+#print("a=",a)
+#print("b=", b)
+#big_delta=b-a #wall thickness 
+#print("big delta=", big_delta)
+#f=60
 #f=np.logspace(0, 5, 500) 
-omega=2*np.pi*f
-delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
-print("delta=", delta)
-gamma=(1+1j)/delta
-
-q=1/(3*b**3*gamma**2*mu_r)
-p=3*b-big_delta
-k=a*b*gamma**2-1
-l=a**2*b**2*gamma**2+b**2-a*big_delta
-o=gamma*big_delta
-SE_ee=np.abs(q*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
-             +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
-print("SE for al=", SE_ee)
-
-
-# graphing SE_ee vs f                                                            
-#SE_ee_db= 20*np.log10(SE_ee)  
-#print()
-
-#fig=plt.figure()
-#ax=fig.add_subplot()
-#ax.plot(f, SE_ee_db, color='red')
-#ax.set_xscale('log')
-
-#ax.set_xlabel("frequency in Hz")
-#ax.set_ylabel("SE in dB")
-#ax.set_ylim(0,100)
-#ax.set_title("SE exact expression")
-
-#ax.grid(True, which="both", ls="--", color='0.65')
-
-#plt.show()
+#omega=2*np.pi*f
+#delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+#print("delta=", delta)
+#gamma=(1+1j)/delta
+#q=1/(3*b**3*gamma**2*mu_r)
+#p=3*b-big_delta
+#k=a*b*gamma**2-1
+#l=a**2*b**2*gamma**2+b**2-a*big_delta
+#o=gamma*big_delta
+#SE_ee=np.abs(q*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
+#             +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
+#print("SE for al=", SE_ee)
