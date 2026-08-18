@@ -13,7 +13,7 @@ import math
 
 
 def brectangle(z,a,b,i):
-    return mu_0*i/(4*pi)*a*b/sqrt((a/2)**2+(b/2)**2+z**2)*(
+    return mu_0*i/(4*pi)*a*b/np.sqrt((a/2)**2+(b/2)**2+z**2)*(
         1/((b/2)**2+z**2)+1/((a/2)**2+z**2)
         )
 
@@ -64,8 +64,8 @@ print(brectangle(0,a,b,i))
 
 print("Test of b_segment")
 print(b_segment(i,p0,p1,r))
-print(mu_0*i*a/(4*pi*b/2)/sqrt((a/2)**2+(b/2)**2))
-print(2*mu_0*i*a/(4*pi*b/2)/sqrt((a/2)**2+(b/2)**2)+2*mu_0*i*b/(4*pi*a/2)/sqrt((a/2)**2+(b/2)**2))
+print(mu_0*i*a/(4*pi*b/2)/np.sqrt((a/2)**2+(b/2)**2))
+print(2*mu_0*i*a/(4*pi*b/2)/np.sqrt((a/2)**2+(b/2)**2)+2*mu_0*i*b/(4*pi*a/2)/np.sqrt((a/2)**2+(b/2)**2))
 print("End test of b_segment")
 
 
@@ -109,7 +109,7 @@ ax3=fig3.add_subplot()
 gridpoints=np.linspace(-.1,.1,201)
 y,z=np.meshgrid(gridpoints,gridpoints)
 bps_mesh=cs.b_prime(0,y,z)
-bmod_mesh=sqrt(bps_mesh[0]**2+bps_mesh[1]**2+bps_mesh[2]**2)
+bmod_mesh=np.sqrt(bps_mesh[0]**2+bps_mesh[1]**2+bps_mesh[2]**2)
 im3=ax3.pcolormesh(y,z,bmod_mesh,vmax=1e-4)
 fig3.colorbar(im3,ax=ax3)
 b_central=cs.b_prime(0,0,0)
@@ -119,7 +119,6 @@ goal_field=100e-9 # goal central field in T
 print("we need ",math.ceil (goal_field/b_central_z), "turns" )
 print ("the central field is", b_central_z)
 print ("the goal field is", goal_field)
-
 
 
 plt.show()
