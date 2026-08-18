@@ -118,34 +118,3 @@ target_y=20
 found_x=np.interp(target_y, se_al_db, f)
 print(f"for Al, when y reaches {target_y}, x is {found_x}")
 
-
-
-
-
-#constants and calculations
-#mu_0=4*np.pi*1e-7 #H/m
-#mu_r=1.00 #relative permeablility of material
-#sigma=3.8e7 #electrical conductivity of material in S/m
-# have to change this still r_0=0.3 #in m'
-#h=0.4256 #in m
-#phi=1.2043 #in m
-#b=np.cbrt(3*phi**2*h/16) #outer radius in m
-#a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254)) #inner radius in m
-#print("a=",a)
-#print("b=", b)
-#big_delta=b-a #wall thickness 
-#print("big delta=", big_delta)
-#f=60
-#f=np.logspace(0, 5, 500) 
-#omega=2*np.pi*f
-#delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
-#print("delta=", delta)
-#gamma=(1+1j)/delta
-#q=1/(3*b**3*gamma**2*mu_r)
-#p=3*b-big_delta
-#k=a*b*gamma**2-1
-#l=a**2*b**2*gamma**2+b**2-a*big_delta
-#o=gamma*big_delta
-#SE_ee=np.abs(q*(2*big_delta*mu_r**2+mu_r*(a*b*p*gamma**2-big_delta)+big_delta*k)*np.cosh(o)
-#             +q/gamma*(gamma**2*l+p*big_delta*mu_r*gamma**2+2*k*mu_r**2+mu_r+1)*np.sinh(o))
-#print("SE for al=", SE_ee)
