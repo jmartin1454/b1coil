@@ -49,10 +49,11 @@ print("SE for Cu=", se_cu)
 #function se for aluminum
 h=0.4256
 phi=1.077
-al_a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
+#if 6 mm thick at 29 Hz SE is ~10
+al_a=np.cbrt(3/4*(phi/2-0.006)**2*(h-2*0.006))
 al_b=np.cbrt(3*phi**2*h/16)
 al_big_delta=al_b-al_a
-se_al=se(1,3.8e7,al_a,al_b,al_big_delta,30)
+se_al=se(1,3.8e7,al_a,al_b,al_big_delta,29)
 print("SE for Al=", se_al, "\n")
 
 #function se_lab for copper
@@ -62,7 +63,7 @@ se_cop=se_lab(1.09,1.18e7,cu_a,cu_b,cu_big_delta,60)
 print("SE for Cu", se_cop)
 
 #function se_lab for aluminum 
-se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,30)
+se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,29)
 big_delta=al_b-al_a
 print("SE for Al=", se_alu, "\n")
 #print("a=", a, "b=", b, "big delta=", se_alu_big_delta, "\n")
@@ -95,38 +96,64 @@ print("SE for Al=", se_alu, "\n")
 #graphing aluminum (se_lab and se) vs f
 f=np.logspace(0, 5, 500)
 omega=2*np.pi*f
-mu_0=4*np.pi*1e-7
-mu_r=1
-sigma=3.8e7
-delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
-#se_al=se(1,3.8e7,al_a,al_b,al_big_delta,f)
-#se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,f)
-#se_al_db=20*np.log10(se_al)  
-#se_alu_db= 20*np.log10(se_alu)  
+se_al=se(1,3.8e7,al_a,al_b,al_big_delta,f)
+se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,f)
+se_al_db=20*np.log10(se_al)  
+se_alu_db= 20*np.log10(se_alu)
 
 fig=plt.figure()
 ax=fig.add_subplot()
-ax.plot(f,delta)
-#ax.plot(f,se_alu_db, linestyle="--",label="se lab function", color="orange")
+ax.plot(f,se_al_db,label="se function", color="blue")
+ax.plot(f,se_alu_db, linestyle="--",label="se lab function", color="orange")
 ax.set_xscale('log')
 ax.set_xlabel("frequency in Hz")
-ax.set_ylabel("skin depth in m")
-#ax.set_ylim(-15, 85)
+ax.set_ylabel("SE in dB")
+ax.set_ylim(-15, 85)
 ax.grid(True, which="both", ls="--", color='0.65')
-ax.set_title("aluminum skin depth vs frequency")
+ax.set_title("aluminum SE vs frequency")
 ax.legend()
 plt.show()
 
-#finding exact value
-target_x=60 
-found_y=np.interp(target_x, f,delta)
-print(f"for Al, when x reaches {target_x}, y is {found_y} m")
 
-#double check 
-f=60
+
+#finding exact value
+target_y=20
+found_x=np.interp(target_y, se_al_db,f)
+print("aluminum SE vs frequency graph")
+print(f"when SE reaches {target_y} dB, frequency is {found_x} Hz", "\n")
+
+
+
+#graphing f vs delta
+f=np.logspace(0, 5, 500)
 omega=2*np.pi*f
 mu_0=4*np.pi*1e-7
 mu_r=1
 sigma=3.8e7
 delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
-print(f"delta at 60Hz = {delta} m")
+
+
+fig=plt.figure()
+ax=fig.add_subplot()
+ax.plot(f,delta)
+ax.set_xscale('log')
+ax.set_xlabel("frequency in Hz")
+ax.set_ylabel("skin depth in m")
+ax.grid(True, which="both", ls="--", color='0.65')
+ax.set_title("aluminum skin depth vs frequency")
+plt.show()
+
+#finding exact value
+target_x=29 
+found_y=np.interp(target_x, f,delta)
+print("aluminum skin depth vs frequency graph")
+print(f"at {target_x} Hz, skin depth is {found_y} m")
+
+#double check 
+#f=60
+#omega=2*np.pi*f
+#mu_0=4*np.pi*1e-7
+#mu_r=1
+#sigma=3.8e7
+#delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+#print(f"delta at 60Hz = {delta} m")
