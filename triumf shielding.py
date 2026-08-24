@@ -42,14 +42,14 @@ def se_lab(mu_r,sigma,a,b,big_delta,f):
 r_0=0.3
 cu_big_delta=0.002
 cu_a=r_0-cu_big_delta/2
-cu_b=r_0+cu_big_delta/2
+cu_b=r_0+cu_big_delta/2.
 se_cu=se(1.09,1.18e7,cu_a,cu_b,cu_big_delta,60)
 print("SE for Cu=", se_cu)
 
 #function se for aluminum
 h=0.4256
-phi=1.2043
-al_a=np.cbrt(3/4*(phi/2-0.0053)**2*(h-2*0.0053))
+phi=1.077
+al_a=np.cbrt(3/4*(phi/2-0.0254)**2*(h-2*0.0254))
 al_b=np.cbrt(3*phi**2*h/16)
 al_big_delta=al_b-al_a
 se_al=se(1,3.8e7,al_a,al_b,al_big_delta,30)
@@ -71,50 +71,62 @@ print("SE for Al=", se_alu, "\n")
 
 
 # graphing copper (se_lab and se) vs f                                                            
-f=np.logspace(0, 5, 500)
-omega=2*np.pi*f
-se_cu=se(1.09,1.18e7,cu_a,cu_b,cu_big_delta,f)
-se_cop=se_lab(1.09,1.18e7,cu_a,cu_b,cu_big_delta,f)
-se_cu_db=20*np.log10(se_cu)  
-se_cop_db= 20*np.log10(se_cop)  
+#f=np.logspace(0, 5, 500)
+#omega=2*np.pi*f
+#se_cu=se(1.09,1.18e7,cu_a,cu_b,cu_big_delta,f)
+#se_cop=se_lab(1.09,1.18e7,cu_a,cu_b,cu_big_delta,f)
+#se_cu_db=20*np.log10(se_cu)  
+#se_cop_db= 20*np.log10(se_cop)  
 
-fig=plt.figure()
-ax=fig.add_subplot()
-ax.plot(f,se_cu_db,label="se function", color="red")
-ax.plot(f,se_cop_db,linestyle="--",label="se lab function", color="green")
-ax.set_xscale('log')
-ax.set_xlabel("frequency in Hz")
-ax.set_ylabel("SE in dB")
-ax.set_ylim(-15, 85)
-ax.grid(True, which="both", ls="--", color='0.65')
-ax.set_title("copper se and se_lab functions")
-ax.legend()
-plt.show()
+#fig=plt.figure()
+#ax=fig.add_subplot()
+#ax.plot(f,se_cu_db,label="se function", color="red")
+#ax.plot(f,se_cop_db,linestyle="--",label="se lab function", color="green")
+#ax.set_xscale('log')
+#ax.set_xlabel("frequency in Hz")
+#ax.set_ylabel("SE in dB")
+#ax.set_ylim(-15, 85)
+#ax.grid(True, which="both", ls="--", color='0.65')
+#ax.set_title("copper se and se_lab functions")
+#ax.legend()
+#plt.show()
 
 
 #graphing aluminum (se_lab and se) vs f
 f=np.logspace(0, 5, 500)
 omega=2*np.pi*f
-se_al=se(1,3.8e7,al_a,al_b,al_big_delta,f)
-se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,f)
-se_al_db=20*np.log10(se_al)  
-se_alu_db= 20*np.log10(se_alu)  
+mu_0=4*np.pi*1e-7
+mu_r=1
+sigma=3.8e7
+delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+#se_al=se(1,3.8e7,al_a,al_b,al_big_delta,f)
+#se_alu=se_lab(1,3.8e7,al_a,al_b,al_big_delta,f)
+#se_al_db=20*np.log10(se_al)  
+#se_alu_db= 20*np.log10(se_alu)  
 
 fig=plt.figure()
 ax=fig.add_subplot()
-ax.plot(f,se_al_db,label="se function")
-ax.plot(f,se_alu_db, linestyle="--",label="se lab function", color="orange")
+ax.plot(f,delta)
+#ax.plot(f,se_alu_db, linestyle="--",label="se lab function", color="orange")
 ax.set_xscale('log')
 ax.set_xlabel("frequency in Hz")
-ax.set_ylabel("SE in dB")
-ax.set_ylim(-15, 85)
+ax.set_ylabel("skin depth in m")
+#ax.set_ylim(-15, 85)
 ax.grid(True, which="both", ls="--", color='0.65')
-ax.set_title("aluminum se and se_lab functions")
+ax.set_title("aluminum skin depth vs frequency")
 ax.legend()
 plt.show()
 
-#finding exact 
-target_y=20 
-found_x=np.interp(target_y, se_al_db, f)
-print(f"for Al, when y reaches {target_y}, x is {found_x}")
+#finding exact value
+target_x=60 
+found_y=np.interp(target_x, f,delta)
+print(f"for Al, when x reaches {target_x}, y is {found_y} m")
 
+#double check 
+f=60
+omega=2*np.pi*f
+mu_0=4*np.pi*1e-7
+mu_r=1
+sigma=3.8e7
+delta=np.sqrt(2/(omega*mu_0*mu_r*sigma))
+print(f"delta at 60Hz = {delta} m")
